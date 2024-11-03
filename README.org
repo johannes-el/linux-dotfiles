@@ -1,3 +1,2 @@
 * linux-dotfiles
-----
-** Configuration files for vanilla emacs.
+** Configuration files for Linux.
