@@ -7,8 +7,7 @@
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
-# set $mod Mod4
-set $mod Mod4
+set $mod Mod1
 # Home row direction keys, like vim
 set $left h
 set $down j
@@ -17,28 +16,17 @@ set $right l
 # Your preferred terminal emulator
 set $term kitty
 # Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
-# set $menu bemenu
-# bemenu | dmenu_path | wmenu | xargs swaymsg exec --
+set $menu wofi --show run
 
 input * {
-            xkb_layout "de"
+    xkb_layout us
 }
-
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
 ### Output configuration
 #
-# Default wallpaper (more resolutions are available in /gnu/store/1kzi74isam7q5z8bsrm8h642hgx8pdq8-sway-1.9/share/backgrounds/sway/)
-# output * bg /gnu/store/1kzi74isam7q5z8bsrm8h642hgx8pdq8-sway-1.9/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-output * bg /home/johannes/Desktop/galaxy.jpg fill
-output DP-1 resolution 1920x1080@50.000Hz position 0,0
+# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+output * bg /home/johannes/Pictures/Courtside-Sunset.png fill
+
 #
 # Example configuration:
 #
@@ -63,12 +51,12 @@ output DP-1 resolution 1920x1080@50.000Hz position 0,0
 #
 # Example configuration:
 #
-input "1267:12655:ELAN0415:00_04F3:316F_Touchpad" {
-   dwt enabled
-   tap enabled
-   natural_scroll disabled
-   middle_emulation disabled
-}
+#   input "2:14:SynPS/2_Synaptics_TouchPad" {
+#       dwt enabled
+#       tap enabled
+#       natural_scroll enabled
+#       middle_emulation enabled
+#   }
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
@@ -80,14 +68,11 @@ input "1267:12655:ELAN0415:00_04F3:316F_Touchpad" {
     # Start a terminal
     bindsym $mod+Shift+Return exec $term
 
-    # Toggle fullscreen
-    bindsym $mod+t fullscreen toggle
-
     # Kill focused window
     bindsym $mod+Shift+c kill
 
     # Start your launcher
-    bindsym $mod+p exec bemenu-run
+    bindsym $mod+p exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -101,9 +86,7 @@ input "1267:12655:ELAN0415:00_04F3:316F_Touchpad" {
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
-
-    exec dbus-update-activation-environment SWAYSOCK WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-
+#
 # Moving around:
 #
     # Move your focus around
@@ -160,8 +143,10 @@ input "1267:12655:ELAN0415:00_04F3:316F_Touchpad" {
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+    # bindsym $mod+b splith
+    # bindsym $mod+v splitv
+
+    bindsym $mod+v exec mpv ~/Studium/Computergraphik_Bildverarbeitung/MarchingCubes/Praesentation/video.mkv
 
     # Switch the current container between different layout styles
     bindsym $mod+s layout stacking
@@ -169,7 +154,7 @@ input "1267:12655:ELAN0415:00_04F3:316F_Touchpad" {
     bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
+    bindsym $mod+t fullscreen
 
     # Toggle the current focus between tiling and floating mode
     bindsym $mod+Shift+space floating toggle
@@ -215,18 +200,31 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
+#
+# Utilities:
+#
+    # Special keys to adjust volume via PulseAudio
+    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+    bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    # Special keys to adjust brightness via brightnessctl
+    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+    # Special key to take a screenshot with grim
+    bindsym Print exec grim
 
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
- bar {
+bar {
     bar swaybar_command waybar
-    position bottom
+    position top
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-#    status_command while date +'%Y-%m-%d %X'; do sleep 1; done;
+    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
 
     colors {
         statusline #ffffff
@@ -235,15 +233,4 @@ bindsym $mod+r mode "resize"
     }
 }
 
-# include /gnu/store/1kzi74isam7q5z8bsrm8h642hgx8pdq8-sway-1.9/etc/sway/config.d/*
-
-# sway fx
-# blur enable
-# blur_xray enable
-# blur_passes 3
-# blur_radius 5
-# layer_effects "waybar" shadows enable;
-# corner_radius 12
-# default_dim_inactive 0.1
-# shadows enable
-# default_dim_inactive 0.5
+include /etc/sway/config.d/*

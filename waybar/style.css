@@ -1,84 +1,93 @@
+/* --- GRUVBOX DARK COLORS --- */
+@define-color bg #1d2021;
+@define-color bg-alt #32302f;
+@define-color fg #ebdbb2;
+@define-color red #cc241d;
+@define-color green #98971a;
+@define-color yellow #d79921;
+@define-color blue #458588;
+@define-color purple #b16286;
+@define-color aqua #689d6a;
+@define-color gray #a89984;
+@define-color orange #d65d0e;
+
+/* --- GLOBAL STYLES --- */
 * {
-    border: none;
-    border-radius: 0;
-    font-size: 13px;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: "0xProto Nerd Font Mono", monospace;
+  font-size: 15px;
+  min-height: 0;
 }
 
 window#waybar {
-    background: transparent;
-    color: white;
+  background: transparent;
+  color: @fg;
 }
 
-#window {
-    font-weight: bold;
-    font-family: "Ubuntu";
-}
-/*
-#workspaces {
-    padding: 0 5px;
-}
-*/
-
-#workspaces button {
-    padding: 0 5px;
-    background: black;
-    color: white;
-    border-top: 2px solid transparent;
-}
-
-
-#workspaces button:hover {
-    box-shadow: inherit;
-	background-color: rgba(0,153,153,1);
-}
-
-#workspaces button.focused {
-	color: #c9545d;
-	border-top: 2px solid #c9545d;
-}
-
+/* --- MODULE STYLES --- */
+#workspaces,
+#window,
 #clock,
-#battery,
+#custom-brightness,
 #cpu,
 #memory,
-#temperature,
 #network,
 #pulseaudio,
-#custom-media,
-#tray,
-#mode,
-#custom-power,
-#custom-menu,
-#idle_inhibitor {
-    padding: 0 10px;
+#tray {
+  background-color: @bg-alt;
+  padding: 5px 15px;
+  margin: 4px 0px;
+  border-radius: 12px;
+  border: 1px solid @gray;
 }
-#mode {
-    color: #cc3436;
-    font-weight: bold;
+
+/* Horizontal spacing between modules */
+#workspaces, #window { margin-right: 8px; }
+#memory { margin-right: 8px; }
+#cpu { margin-right: 8px; }
+#network { margin-right: 8px; }
+#pulseaudio { margin-right: 8px; }
+#custom-brightness { margin-right: 8px; }
+
+/* --- WORKSPACES --- */
+#workspaces {
+  padding-left: 10px;
+  padding-right: 5px;
+  background-color: @bg;
 }
-#custom-power {
-    background-color: rgba(0,119,179,0.6);
-    border-radius: 100px;
-    margin: 5px 5px;
-    padding: 1px 1px 1px 6px;
+#workspaces button {
+  padding: 0 5px;
+  color: @gray;
+  transition: all 0.3s ease;
 }
-/*-----Indicators----*/
-#idle_inhibitor.activated {
-    color: #2dcc36;
+#workspaces button:hover {
+  color: @fg;
+  background-color: @bg-alt;
+  border-radius: 8px;
 }
-#pulseaudio.muted {
-    color: #cc3436;
+#workspaces button.active {
+  color: @aqua;
+  font-weight: bold;
 }
-#battery.charging {
-    color: #2dcc36;
+#workspaces button.urgent {
+  color: @red;
 }
-#battery.warning:not(.charging) {
-	color: #e6e600;
+
+/* --- INDIVIDUAL MODULE COLORS --- */
+#clock { color: @purple; font-weight: bold; }
+#custom-brightness { color: @yellow; }
+#pulseaudio { color: @blue; }
+#network { color: @aqua; }
+#cpu { color: @orange; }
+#memory { color: @green; }
+
+/* --- TOOLTIP STYLES --- */
+tooltip {
+  background-color: @bg;
+  border: 1px solid @purple;
+  border-radius: 8px;
 }
-#battery.critical:not(.charging) {
-    color: #cc3436;
-}
-#temperature.critical {
-    color: #cc3436;
+tooltip label {
+  color: @fg;
 }
